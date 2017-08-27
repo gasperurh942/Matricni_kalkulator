@@ -1,5 +1,5 @@
 ﻿# Matrični kalkulator
-##Projektna naloga pri predmetu **Uvod v programiranje** FMF 2017
+## Projektna naloga pri predmetu **Uvod v programiranje** FMF 2017
 
 Naredil sem preprost, a vendarle uporaben program, ki računa z matrikami.Zmore:
 - računati determinante,
