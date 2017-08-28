@@ -190,9 +190,15 @@ def inverz(matrika):
             )
 
 def preberi(shranjena_matrika):
-    with open(shranjena_matrika) as vhod:
-        matrika = []
-        for vrstica in vhod:
-            matrika.append(vrstica.split('|')[:-1])
-        return matrika      
+    try:
+        with open(shranjena_matrika) as vhod:
+            if vhod == '':
+                return ''
+            else:
+                matrika = []
+                for vrstica in vhod:
+                    matrika.append(vrstica.split('|')[:-1])
+                return matrika
+    except:
+        return ''
                 
