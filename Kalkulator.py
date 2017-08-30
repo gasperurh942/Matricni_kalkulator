@@ -53,7 +53,7 @@ def zacni_program():
                     mreza[(i, j)].grid(row = i, column = j)
                     
             mreza[(0, 0)].focus_set()
-                    
+                   
             def ponastavi():
                 okno1.destroy()
                 zacni_program()
@@ -81,6 +81,14 @@ def zacni_program():
                                 mreza_nicel[i][j] = Ulomek(int(niz), 1)
                 return mreza_nicel
 
+            def shrani_v_knjiznico():
+                    with open('shranjena_matrika.txt', 'w') as knjiznica:
+                        for i in rezultat:
+                            vrstica = ''
+                            for clen in i:
+                                vrstica = vrstica + str(clen) + '|'
+                            print(vrstica, file=knjiznica)
+
             def izracunaj_determinanto():
                 '''Izračuna determinanto še ne pretvorjene matrike (uporabi funkcijo
                 'shrani_matriko' in jo izračuna iz oblike seznama seznamov) ter jo
@@ -100,18 +108,10 @@ def zacni_program():
                 '''Izračuna inverz še ne pretvorjene matrike (uporabi funkcijo
                 'shrani_matriko' in ga izračuna iz oblike seznama seznamov) ter ga
                 izpiše v novem oknu (v obliki matrike, ne seznama).'''
+                global rezultat
+
                 matrika_objekt = shrani_matriko()
-
                 koncno_okno = tk.Tk()
-
-                def shrani_v_knjiznico():
-                    with open('shranjena_matrika.txt', 'w') as knjiznica:
-                        for i in rezultat:
-                            vrstica = ''
-                            for clen in i:
-                                vrstica = vrstica + str(clen) + '|'
-                            print(vrstica, file=knjiznica)
-                        koncno_okno_spodaj.destroy()
 
                 if st_stolpcev != st_vrstic:
                     izpis = tk.Label(koncno_okno, text='Matrika ni ustreznih dimenzij\nza računanje inverza.')
@@ -131,7 +131,8 @@ def zacni_program():
                             
                     koncno_okno_spodaj = tk.Frame(koncno_okno)
                     gumb_shrani = tk.Button(koncno_okno_spodaj, text='Shrani matriko',
-                                            command = shrani_v_knjiznico)
+                                            command = lambda:[shrani_v_knjiznico(),
+                                                              koncno_okno_spodaj.destroy()])
                     
                     koncno_okno_spodaj.grid(row = st_vrstic, column = 0)
                     gumb_shrani.pack()
@@ -140,18 +141,10 @@ def zacni_program():
                 '''Izračuna transponiranko še ne pretvorjene matrike (uporabi funkcijo
                 'shrani_matriko' in jo izračuna iz oblike seznama seznamov) ter jo
                 izpiše v novem oknu (v obliki matrike, ne seznama).'''
+                global rezultat
+                
                 matrika_objekt = shrani_matriko()
-
                 koncno_okno = tk.Tk()
-
-                def shrani_v_knjiznico():
-                    with open('shranjena_matrika.txt', 'w') as knjiznica:
-                        for i in rezultat:
-                            vrstica = ''
-                            for clen in i:
-                                vrstica = vrstica + str(clen) + '|'
-                            print(vrstica, file=knjiznica)
-                        koncno_okno_spodaj.destroy()
                         
                 rezultat = transponiranka(matrika_objekt)
                 for i in range(st_stolpcev):
@@ -164,12 +157,15 @@ def zacni_program():
 
                 koncno_okno_spodaj = tk.Frame(koncno_okno)
                 gumb_shrani = tk.Button(koncno_okno_spodaj, text='Shrani matriko',
-                                        command = shrani_v_knjiznico)
+                                        command = lambda:[shrani_v_knjiznico(),
+                                                          koncno_okno_spodaj.destroy()])
                 
                 koncno_okno_spodaj.grid(row = st_stolpcev, column = 0)
                 gumb_shrani.pack()
 
             def zmnozi_s_skalarjem():
+                global rezultat
+                
                 matrika_objekt = shrani_matriko()
                 #faktor
                 niz = zapisi_faktor.get()
@@ -184,15 +180,6 @@ def zacni_program():
                 rezultat = mnozenje_s_skalarjem(matrika_objekt, faktor)
                 koncno_okno = tk.Tk()
 
-                def shrani_v_knjiznico():
-                    with open('shranjena_matrika.txt', 'w') as knjiznica:
-                        for i in rezultat:
-                            vrstica = ''
-                            for clen in i:
-                                vrstica = vrstica + str(clen) + '|'
-                            print(vrstica, file=knjiznica)
-                        koncno_okno_spodaj.destroy()
-
                 for i in range(st_vrstic):
                     vrstica = tk.Frame(koncno_okno)
                     vrstica.grid(row = i, column = 0)
@@ -203,27 +190,21 @@ def zacni_program():
 
                 koncno_okno_spodaj = tk.Frame(koncno_okno)
                 gumb_shrani = tk.Button(koncno_okno_spodaj, text='Shrani matriko',
-                                        command = shrani_v_knjiznico)
+                                        command = lambda:[shrani_v_knjiznico(),
+                                                          koncno_okno_spodaj.destroy()])
                 
                 koncno_okno_spodaj.grid(row = st_vrstic, column = 0)
                 gumb_shrani.pack()
                         
             def potenciraj():
+                global rezultat
+                
                 matrika_objekt = shrani_matriko()
                 eksponent = int(zapisi_eksponent.get())
 
                 rezultat = potenca(matrika_objekt, eksponent)
                 koncno_okno = tk.Tk()
-
-                def shrani_v_knjiznico():
-                    with open('shranjena_matrika.txt', 'w') as knjiznica:
-                        for i in rezultat:
-                            vrstica = ''
-                            for clen in i:
-                                vrstica = vrstica + str(clen) + '|'
-                            print(vrstica, file=knjiznica)
-                        koncno_okno_spodaj.destroy()
-
+                            
                 if st_stolpcev != st_vrstic:
                     napis = tk.Label(koncno_okno, text='Matrika ni ustreznih dimenzij')
                     napis.pack()
@@ -240,7 +221,8 @@ def zacni_program():
 
                     koncno_okno_spodaj = tk.Frame(koncno_okno)
                     gumb_shrani = tk.Button(koncno_okno_spodaj, text='Shrani matriko',
-                                            command = shrani_v_knjiznico)
+                                            command = lambda:[shrani_v_knjiznico(),
+                                                              koncno_okno_spodaj.destroy()])
                     
                     koncno_okno_spodaj.grid(row = st_vrstic, column = 0)
                     gumb_shrani.pack()
@@ -328,20 +310,13 @@ def zacni_program():
                         return mreza_nicel2
                     
                     def sestej():
+                        global rezultat
+                        
                         matrika1 = shrani_matriko()
                         matrika2 = shrani_matriko2()
                         
                         koncno_okno = tk.Tk()
                         rezultat = sestevanje(matrika1, matrika2)
-
-                        def shrani_v_knjiznico():
-                            with open('shranjena_matrika.txt', 'w') as knjiznica:
-                                for i in rezultat:
-                                    vrstica = ''
-                                    for clen in i:
-                                        vrstica = vrstica + str(clen) + '|'
-                                    print(vrstica, file=knjiznica)
-                                koncno_okno_spodaj.destroy()
 
                         if (rezultat == 'Matriki nimata enako dolgih stolpcev.' or
                             rezultat == 'Matriki nimata enakega števila vrstic.'):
@@ -358,26 +333,20 @@ def zacni_program():
 
                             koncno_okno_spodaj = tk.Frame(koncno_okno)
                             gumb_shrani = tk.Button(koncno_okno_spodaj, text='Shrani matriko',
-                                                    command = shrani_v_knjiznico)
+                                                    command = lambda:[shrani_v_knjiznico(),
+                                                                      koncno_okno_spodaj.destroy()])
                             
                             koncno_okno_spodaj.grid(row = st_vrstic, column = 0)
                             gumb_shrani.pack()
 
                     def zmnozi():
+                        global rezultat
+                        
                         matrika1 = shrani_matriko()
                         matrika2 = shrani_matriko2()
 
                         koncno_okno = tk.Tk()
                         rezultat = mnozenje(matrika1, matrika2)
-
-                        def shrani_v_knjiznico():
-                            with open('shranjena_matrika.txt', 'w') as knjiznica:
-                                for i in rezultat:
-                                    vrstica = ''
-                                    for clen in i:
-                                        vrstica = vrstica + str(clen) + '|'
-                                    print(vrstica, file=knjiznica)
-                                koncno_okno_spodaj.destroy()
                         
                         if rezultat == 'Množenje ni mogoče.':
                             napis = tk.Label(koncno_okno, text=rezultat)
@@ -393,7 +362,8 @@ def zacni_program():
 
                             koncno_okno_spodaj = tk.Frame(koncno_okno)
                             gumb_shrani = tk.Button(koncno_okno_spodaj, text='Shrani matriko',
-                                                    command = shrani_v_knjiznico)
+                                                    command = lambda:[shrani_v_knjiznico(),
+                                                                      koncno_okno_spodaj.destroy()])
                             
                             koncno_okno_spodaj.grid(row = st_vrstic, column = 0)
                             gumb_shrani.pack()
