@@ -7,13 +7,17 @@ def gcd(m, n):
 
 class Ulomek:
     def __init__(self, st, im):
+                
+        while st % 1 != 0 or im % 1 != 0:
+            st *= 10
+            im *= 10
+
+        st = int(st)
+        im = int(im)
+
         delitelj = gcd(st, im)
-        if st != 0:
-            self.st = int(st / delitelj)
-            self.im = int(im / delitelj)
-        else:
-            self.st = 0
-            self.im = 1
+        self.st = int(st / delitelj)
+        self.im = int(im / delitelj)
 
     def __repr__(self):
         return 'Ulomek({0}, {1})'.format(self.st, self.im)
