@@ -42,6 +42,8 @@ def zacni_program():
             OK.destroy()
             mreza = {}
             mreza_nicel = []
+
+            
             for i in range(st_vrstic):
                 mreza_nicel.append([])
                 vrstica = tk.Frame(zgoraj)
@@ -50,6 +52,8 @@ def zacni_program():
                     mreza_nicel[i].append(Ulomek(0, 1))
                     mreza[(i, j)] = tk.Entry(vrstica, width = 4)
                     mreza[(i, j)].grid(row = i, column = j)
+                    
+            mreza[(0, 0)].focus_set()
                     
             def ponastavi():
                 okno1.destroy()
@@ -428,6 +432,20 @@ def zacni_program():
     stevilo_stolpcev = tk.Entry(zgoraj, width = 4)
     OK = tk.Button(spodaj, text='Nastavi velikost matrike', width=20,
                    command=odpri_polje_za_matriko)
+    stevilo_vrstic.focus_set()
+
+    def odpri(event):
+        odpri_polje_za_matriko()
+
+    def premakni_desno(event):
+        stevilo_stolpcev.focus_set()
+
+    def premakni_levo(event):
+        stevilo_vrstic.focus_set()
+        
+    stevilo_stolpcev.bind('<Return>', odpri)
+    stevilo_vrstic.bind('<Right>', premakni_desno)
+    stevilo_stolpcev.bind('<Left>', premakni_levo)
     
     gumb_nalozi_matriko.pack()
     stevilo_vrstic.grid(row = 0, column = 0)
