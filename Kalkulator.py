@@ -42,7 +42,6 @@ def zacni_program():
             OK.destroy()
             mreza = {}
             mreza_nicel = []
-
             
             for i in range(st_vrstic):
                 mreza_nicel.append([])
@@ -107,7 +106,7 @@ def zacni_program():
 
                 def shrani_v_knjiznico():
                     with open('shranjena_matrika.txt', 'w') as knjiznica:
-                        for i in inv:
+                        for i in rezultat:
                             vrstica = ''
                             for clen in i:
                                 vrstica = vrstica + str(clen) + '|'
@@ -121,12 +120,12 @@ def zacni_program():
                     izpis = tk.Label(koncno_okno, text=inverz(matrika_objekt))
                     izpis.pack()
                 else:
-                    inv = inverz(matrika_objekt)
+                    rezultat = inverz(matrika_objekt)
                     for i in range(st_vrstic):
                         vrstica = tk.Frame(koncno_okno)
                         vrstica.grid(row = i, column = 0)
                         for j in range(st_stolpcev):
-                            clen = tk.Label(vrstica, text=str(inv[i][j]),
+                            clen = tk.Label(vrstica, text=str(rezultat[i][j]),
                                             height=2, width=5)
                             clen.grid(row = 0, column = j)
                             
@@ -147,19 +146,19 @@ def zacni_program():
 
                 def shrani_v_knjiznico():
                     with open('shranjena_matrika.txt', 'w') as knjiznica:
-                        for i in tra:
+                        for i in rezultat:
                             vrstica = ''
                             for clen in i:
                                 vrstica = vrstica + str(clen) + '|'
                             print(vrstica, file=knjiznica)
                         koncno_okno_spodaj.destroy()
                         
-                tra = transponiranka(matrika_objekt)
+                rezultat = transponiranka(matrika_objekt)
                 for i in range(st_stolpcev):
                     vrstica = tk.Frame(koncno_okno)
                     vrstica.grid(row = i, column = 0)
                     for j in range(st_vrstic):
-                        clen = tk.Label(vrstica, text=str(tra[i][j]),
+                        clen = tk.Label(vrstica, text=str(rezultat[i][j]),
                                         height=2, width=5)
                         clen.grid(row = 0, column = j)
 
@@ -174,17 +173,20 @@ def zacni_program():
                 matrika_objekt = shrani_matriko()
                 #faktor
                 niz = zapisi_faktor.get()
-                sez = niz.split('/')
-                stevec = int(sez[0])
-                imenovalec = int(sez[1])
-                faktor = Ulomek(stevec, imenovalec)
+                if '/' in niz:
+                    sez = niz.split('/')
+                    stevec = int(sez[0])
+                    imenovalec = int(sez[1])
+                    faktor = Ulomek(stevec, imenovalec)
+                else:
+                    faktor = float(niz)
 
-                produkt = mnozenje_s_skalarjem(matrika_objekt, faktor)
+                rezultat = mnozenje_s_skalarjem(matrika_objekt, faktor)
                 koncno_okno = tk.Tk()
 
                 def shrani_v_knjiznico():
                     with open('shranjena_matrika.txt', 'w') as knjiznica:
-                        for i in produkt:
+                        for i in rezultat:
                             vrstica = ''
                             for clen in i:
                                 vrstica = vrstica + str(clen) + '|'
@@ -195,7 +197,7 @@ def zacni_program():
                     vrstica = tk.Frame(koncno_okno)
                     vrstica.grid(row = i, column = 0)
                     for j in range(st_stolpcev):
-                        clen = tk.Label(vrstica, text=str(produkt[i][j]),
+                        clen = tk.Label(vrstica, text=str(rezultat[i][j]),
                                         height=2, width=5)
                         clen.grid(row = 0, column = j)
 
@@ -253,14 +255,22 @@ def zacni_program():
                               command=izracunaj_inverz)
             gumb2 = tk.Button(spodaj, text='Transponiranka', width=20,
                               command=izracunaj_transponiranko)
+            
             gumb4 = tk.Frame(spodaj, width=20)
             zapisi_faktor = tk.Entry(gumb4, width=6)
             gumb41 = tk.Button(gumb4, text='Zmnoži s skalarjem:', width=14,
                                command=zmnozi_s_skalarjem)
+            def sprozi41(event):
+                zmnozi_s_skalarjem()
+            zapisi_faktor.bind('<Return>', sprozi41)
+            
             gumb5 = tk.Frame(spodaj, width=20)
             zapisi_eksponent = tk.Entry(gumb5, width=6)
             gumb51 = tk.Button(gumb5, text='Potenciraj na:', width=14,
                                command=potenciraj)
+            def sprozi51(event):
+                potenciraj()
+            zapisi_eksponent.bind('<Return>', sprozi51)
             
             gumb_ponastavi.grid(row = 0, column = 0)
             gumb_pobrisi.grid(row = 0, column = 1)
@@ -322,27 +332,27 @@ def zacni_program():
                         matrika2 = shrani_matriko2()
                         
                         koncno_okno = tk.Tk()
-                        vsota = sestevanje(matrika1, matrika2)
+                        rezultat = sestevanje(matrika1, matrika2)
 
                         def shrani_v_knjiznico():
                             with open('shranjena_matrika.txt', 'w') as knjiznica:
-                                for i in vsota:
+                                for i in rezultat:
                                     vrstica = ''
                                     for clen in i:
                                         vrstica = vrstica + str(clen) + '|'
                                     print(vrstica, file=knjiznica)
                                 koncno_okno_spodaj.destroy()
 
-                        if (vsota == 'Matriki nimata enako dolgih stolpcev.' or
-                            vsota == 'Matriki nimata enakega števila vrstic.'):
-                            napis = tk.Label(koncno_okno, text=vsota)
+                        if (rezultat == 'Matriki nimata enako dolgih stolpcev.' or
+                            rezultat == 'Matriki nimata enakega števila vrstic.'):
+                            napis = tk.Label(koncno_okno, text=rezultat)
                             napis.pack()
                         else:
                             for i in range(st_vrstic2):
                                 vrstica = tk.Frame(koncno_okno)
                                 vrstica.grid(row = i, column = 0)
                                 for j in range(st_stolpcev2):
-                                    clen = tk.Label(vrstica, text=str(vsota[i][j]),
+                                    clen = tk.Label(vrstica, text=str(rezultat[i][j]),
                                                     height=2, width=5)
                                     clen.grid(row = 0, column = j)
 
@@ -358,26 +368,26 @@ def zacni_program():
                         matrika2 = shrani_matriko2()
 
                         koncno_okno = tk.Tk()
-                        produkt = mnozenje(matrika1, matrika2)
+                        rezultat = mnozenje(matrika1, matrika2)
 
                         def shrani_v_knjiznico():
                             with open('shranjena_matrika.txt', 'w') as knjiznica:
-                                for i in produkt:
+                                for i in rezultat:
                                     vrstica = ''
                                     for clen in i:
                                         vrstica = vrstica + str(clen) + '|'
                                     print(vrstica, file=knjiznica)
                                 koncno_okno_spodaj.destroy()
                         
-                        if produkt == 'Množenje ni mogoče.':
-                            napis = tk.Label(koncno_okno, text=produkt)
+                        if rezultat == 'Množenje ni mogoče.':
+                            napis = tk.Label(koncno_okno, text=rezultat)
                             napis.pack()
                         else:
                             for i in range(len(matrika1)):
                                 vrstica = tk.Frame(koncno_okno)
                                 vrstica.grid(row = i, column = 0)
                                 for j in range(len(matrika2[0])):
-                                    clen = tk.Label(vrstica, text=str(produkt[i][j]),
+                                    clen = tk.Label(vrstica, text=str(rezultat[i][j]),
                                                     height=2, width=5)
                                     clen.grid(row = 0, column = j)
 
@@ -401,6 +411,21 @@ def zacni_program():
                 stevilo_stolpcev2 = tk.Entry(zgoraj2, width = 4)
                 OK2 = tk.Button(spodaj2, text='Nastavi velikost matrike', width=20,
                                 command=odpri_novo_polje_za_matriko)
+                stevilo_vrstic2.focus_set()
+
+                def odpri2(event):
+                    odpri_novo_polje_za_matriko()
+
+                def premakni_desno2(event):
+                    stevilo_stolpcev2.focus_set()
+
+                def premakni_levo2(event):
+                    stevilo_vrstic2.focus_set()
+                    
+                stevilo_stolpcev2.bind('<Return>', odpri2)
+                stevilo_vrstic2.bind('<Right>', premakni_desno2)
+                stevilo_vrstic2.bind('<Return>', odpri2)
+                stevilo_stolpcev2.bind('<Left>', premakni_levo2)
 
                 stevilo_vrstic2.grid(row = 0, column = 0)
                 krat2.grid(row = 0, column = 1)
@@ -444,6 +469,7 @@ def zacni_program():
         stevilo_vrstic.focus_set()
         
     stevilo_stolpcev.bind('<Return>', odpri)
+    stevilo_vrstic.bind('<Return>', odpri)
     stevilo_vrstic.bind('<Right>', premakni_desno)
     stevilo_stolpcev.bind('<Left>', premakni_levo)
     
