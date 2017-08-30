@@ -72,6 +72,8 @@ def zacni_program():
                             if '/' in niz:
                                 par = niz.split('/')
                                 mreza_nicel[i][j] = Ulomek(int(par[0]), int(par[1]))
+                            elif '.' in niz:
+                                mreza_nicel[i][j] = Ulomek(float(niz), 1)
                             else:
                                 mreza_nicel[i][j] = Ulomek(int(niz), 1)
                 return mreza_nicel
